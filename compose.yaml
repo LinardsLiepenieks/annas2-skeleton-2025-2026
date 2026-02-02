@@ -58,16 +58,20 @@ services:
       -c auto_explain.log_min_duration=10
 
   traefik:
-    image: traefik:v3.3
+    image: traefik:v2.11
     command:
       - '--api.insecure=true'
       - '--providers.docker=true'
+      - '--providers.docker.exposedByDefault=false'
+      - '--providers.docker.network=annas2-skeleton-2025-2026_default'
+      - '--providers.docker.endpoint=tcp://host.docker.internal:2375'
       - '--entrypoints.web.address=:12345'
     ports:
       - '8080:8080'
       - '12345:12345'
-    volumes:
-      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   database-migrations:
     image: flyway/flyway:10
