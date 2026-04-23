@@ -2,6 +2,9 @@
 import Layout from "../layouts/Layout.astro";
 import Hello from "../components/Hello.astro";
 import FirstSvelteComponent from "../components/FirstSvelteComponent.svelte";
+import SSEExample from "../components/SSEExample.svelte";
+import SSEChat from "../components/SSEChat.svelte";
+import WSExample from "../components/WSExample.svelte";
 ---
 
 <Layout>
@@ -9,4 +12,7 @@ import FirstSvelteComponent from "../components/FirstSvelteComponent.svelte";
   <a href="/about">About</a>
   <Hello username="Existant user" />
   <FirstSvelteComponent client:visible/>
+  <SSEExample client:visible/>
+  <SSEChat client:visible></SSEChat>
+  <WSExample client:visible></WSExample>
 </Layout>

@@ -8,9 +8,16 @@ import { redisProducer } from './redis-queue.js';
 import { ssrHandler } from './ssr-example.js';
 import { serveStatic } from '@hono/hono/deno';
 import { registerHybridRoutes } from './hybrid-rendering.js';
+import { registerSSERoute } from './sse-example.js';
+import { registerSSECHat } from './sse-chat.js';
+import { registerWSRoute } from './ws-chat.js';
 
 const app = new Hono();
+registerWSRoute(app);
+app.use('/*', cors());
 registerHybridRoutes(app);
+registerSSERoute(app);
+registerSSECHat(app);
 const sql = postgres();
 const redis = new Redis(6379, 'redis');
 
@@ -30,7 +37,6 @@ app.get('/redis-test', async (c) => {
   return c.json({ count });
 });
 
-app.use('/*', cors());
 app.use('/*', logger());
 app.use('/*', async (c, next) => {
   c.res.headers.set('X-Replica-Id', REPLICA_ID);
